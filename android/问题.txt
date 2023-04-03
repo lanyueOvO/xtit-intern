@@ -1,0 +1,15 @@
+Android Studio安装完后，无法启动gradle守护进程，报下面错误：
+	Unable to start the daemon process.
+	This problem might be caused by incorrect configuration of the daemon.
+	或者布局文件无法正常显示。
+
+原因：
+	有些win10版本默认用IPV6启动JVM，实际gradle要用IPV4。
+
+解决办法：
+	配置如下环境变量
+		变量名：_JAVA_OPTIONS
+		变量值：-Djava.net.preferIPv4Stack=true
+	再重启Android Studio工具即可。
+------------------------------------------------------------------------------------
+所有路径里都不要有中文，包括电脑用户名都不能是中文。
