@@ -1,0 +1,133 @@
+
+
+一、硬件连接
+	SecureCRT:用来远程连接开发板终端
+		快速连接：
+			1.协议：Serial
+			2.端口：选择和你“设备管理器”的端口号保持一致
+			3.波特率：115200
+			4.去掉 RTS/CTS 前面的勾选
+		==> 连接
+
+二、交叉开发
+	1.编写代码（windows下）
+	2.编译代码（linux下）
+		arm-linux-gcc xxx.c -o xxx
+	3.移植到开发板上运行
+		1.在SecureCRT端口上
+			rx xxx
+			按一下回车
+			点菜单栏 “传输” 的第三个“发送”
+		2.给 xxx 这个可执行文件赋予 可执行的权限
+			chmod +x xxx
+		3.运行程序
+			./xxx
+
+十分钟动手操作一遍，能在板子上运行你的程序。
+
+三、系统文件IO
+	在linux中，文件很重要。
+	有一句至理名言，在linux下，一切皆文件。
+	提供一些函数接口（API）供我们调用。
+	
+	linux自带的man手册
+	
+	相关指令：man -f 你想要查询的函数名
+		man -f open
+	
+	1.打开文件 open
+		函数原型：
+			#include <sys/types.h>
+			#include <sys/stat.h>
+			#include <fcntl.h>
+
+			int open(const char *pathname, int flags);
+		参数列表：
+			pathname	：您想要打开的那个文件的路径名（路径+名字） 
+							例如：“/mnt/hgfs/share/1.txt”
+			flags		：打开的权限
+							O_RDONLY	只读
+							O_WRONLY	只写
+							O_RDWR		可读可写
+		返回值：
+			成功 返回一个正整数，表示被打开的文件
+				一般称之为文件描述符
+			失败 返回-1，表示打开文件失败
+		示例1：
+			int fd = open("/mnt/hgfs/share/CXK/cxk.txt", O_RDWR);
+			if(fd == -1)
+			{
+				perror("open failed");
+				return 0;
+			}
+
+	2.读取文件数据 read
+		函数原型：
+			#include <unistd.h>
+
+			ssize_t read(int fd, void *buf, size_t count);
+		参数列表：
+			fd	：你想读取的那个文件的文件描述符
+			buf	：一段内存空间，保存你读取到的数据
+			count ：你要读取的数据大小 单位：字节
+		返回值：
+			成功 返回正整数，表示读取文件成功
+			失败 返回-1，表示读取文件失败
+		示例2：
+			char rec_buf[25] = {0}; // 定义一段内存空间 保存读取到的数据
+			int ret = read(fd, rec_buf, 8);
+			if(ret == -1)
+			{
+				perror("read failed!");
+			}
+
+	3.向文件写入数据 write
+		函数原型：
+			#include <unistd.h>
+
+			ssize_t write(int fd, const void *buf, size_t count);
+		参数列表：
+			fd	：你想要写入到那个文件的文件描述符
+			buf	：一段内存空间，保存你要写入的数据
+			count ：你要读取的数据大小 单位：字节
+		返回值：
+			成功 返回正整数，表示写入文件成功
+			失败 返回-1，表示写入文件失败
+		示例3：
+			char s_buf[25] = {"i am ikun"};
+			ret = write(fd, s_buf, 10);
+			if(ret == -1)
+			{
+				perror("write failed!");
+			}
+	
+	4.关闭文件 close
+		#include <unistd.h>
+
+		int close(int fd);
+		
+	5.定位“光标” lseek
+		函数原型：
+			#include <sys/types.h>
+			#include <unistd.h>
+
+			off_t lseek(int fd, off_t offset, int whence);
+		参数列表：
+			fd	：你想要操作那个文件的文件描述符
+			offset ：偏移量 单位：字节
+			whence ：定位方式，有三种
+					SEEK_SET :以文件开头位置为基准进行偏移
+							新光标 = 文件开头位置 + offset
+					SEEK_END :以文件末尾位置为基准进行偏移
+							新光标 = 文件末尾位置 + offset
+					SEEK_CUR :以光标当前位置为基准进行偏移
+							新光标 = 光标当前位置 + offset
+
+练习：十分钟动手操作一下上面的函数。
+
+作业：程序实现简单的拷贝功能。
+	把your_study.txt里面的数据拷贝到my_study.txt。
+
+
+
+

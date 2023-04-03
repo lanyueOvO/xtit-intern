@@ -1,0 +1,47 @@
+
+输入事件，触发后数据会保存在“/dev/input/event0”文件中
+
+对应的结构体的定义：
+	#include <linux/input.h>
+	
+	/*
+	* The event structure itself
+	*/
+
+	struct input_event {
+		struct timeval time; // 事件触发的时间
+		__u16 type; // 事件的类型
+			//EV_KEY     按键事件
+			//EV_REL     (relative)鼠标事件
+			//EV_ABS    (absolute)触摸屏事件	
+
+		__u16 code; 
+			//if  (type == EV_KEY)      code 为按键的键值
+			//if  (type == EV_REL)      code 为坐标  REL_X  或  REL_Y
+			//if  (type == EV_ABS)      code 为坐标 ABS_X  或 ABS_Y	
+			
+		__s32 value; // 具体的值
+			//if  (type == EV_KEY)  value 1 /0 　按键down/up
+			//if  (type == EV_REL)  value表示相应的坐标轴的偏移量
+			//if  (type == EV_ABS)  value表示相应的坐标轴的绝对坐标	
+	};
+
+程序实现：
+	input.h
+	
+	input.c
+		
+		// 获取触摸坐标
+		void get_touch()
+		{
+		
+		}
+
+
+
+
+
+
+
+
+
