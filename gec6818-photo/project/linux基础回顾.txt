@@ -1,0 +1,47 @@
+
+0.基本指令：
+	cd :切换路径
+		cd /mnt/hgfs/share
+		cd .. 		// 返回上一次目录
+		cd - 		// 返回上一次最新的路径
+		cd / 		// 切换到根目录
+	ls :查看当前路径下的内容
+	touch :新建文件
+		touch main.c // 新建名为main的源文件
+	mkdir :新建目录
+		mkdir CXK // 新建名为C的XK目录（文件夹）
+	rm :删除文件
+		rm main.c
+	rm -rf :删除目录
+		rm CXK
+	cp :拷贝
+		cp main.c main_1.c // 把main.c拷贝一份名为main_1.c
+		cp /mnt/hgfs/share/a.out /mnt/hgfs/share/CXK/ // 把a.out这个文件拷贝到.../CXK路径下
+	mv :移动文件/目录（重命名）
+		mv main_1.c cxk.c // 把main_1.c重命名为cxk.c
+	pwd :查看当前路径全称
+	
+	sudo su :切换为管理员权限 密码:123456
+	ctrl + d :切换回普通用户
+
+1.编译指令
+	前提保证是.c的源文件
+	1.0 编译
+		gcc main.c -o main // 把源文件main.c(对人)编译生成名为main(对机器)的可执行文件(二进制文件)
+		gcc main.c // 在当前路径下默认生成名为a.out的可执行文件
+	1.1 运行
+		./main
+	
+建议：写代码尽量在windows上，编译代码在linux下
+我们项目硬件平台已经移植好了linux操作系统
+	
+练习：熟悉以上常用指令的用法，写一个 ”hello world“ 的C程序，然后编译运行。
+扩展：linux下vim工具的使用
+	
+	
+	
+	
+	
+	
+	
+
